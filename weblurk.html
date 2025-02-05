@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebLurk - Programação</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #181818;
+            color: white;
+        }
+        iframe {
+            width: 80%;
+            height: 500px;
+            border: none;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>WebLurk - Transmissão Automática</h1>
+    <h2>Cerberus Team</h2>
+    <p>O canal muda automaticamente conforme a programação.</p>
+    <iframe id="twitch-embed" src="" allowfullscreen></iframe>
+    
+    <script>
+        const schedule = [
+            { time: "22:15", channel: "desyrew" },
+            { time: "23:00", channel: "desyrew" },
+            { time: "04:00", channel: "canal3" }
+            // Adicione mais horários e canais conforme necessário
+        ];
+        
+        function getCurrentChannel() {
+            const now = new Date();
+            const currentTime = now.getHours().toString().padStart(2, '0') + ":" + now.getMinutes().toString().padStart(2, '0');
+            let selectedChannel = schedule[0].channel;
+            
+            for (let i = 0; i < schedule.length; i++) {
+                if (currentTime >= schedule[i].time) {
+                    selectedChannel = schedule[i].channel;
+                }
+            }
+            return selectedChannel;
+        }
+        
+        function updateStream() {
+            const channel = getCurrentChannel();
+            document.getElementById("twitch-embed").src = `https://player.twitch.tv/?channel=${channel}&parent=localhost`;
+        }
+        
+        updateStream();
+        setInterval(updateStream, 60000); // Atualiza a cada minuto
+    </script>
+</body>
+</html>
